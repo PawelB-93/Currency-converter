@@ -4,11 +4,13 @@ import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class CurrencyController {
     private final CurrencyService currencyService;
 
@@ -17,8 +19,36 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-    @GetMapping
-    public ResponseEntity<CurrencyDto> getCurrency(@RequestParam String firstCurrency, @RequestParam String secondCurrency, @RequestParam(required = false) String date) {
-        return ResponseEntity.ok(currencyService.checkCurrency(firstCurrency, secondCurrency, date));
+
+    @GetMapping("/current/{base}/{target}")
+    public ResponseEntity<CurrencyDto> getCurrentExchangeRate(@PathVariable String base,
+                                                                  @PathVariable String target) {
+        return ResponseEntity.ok().body(currencyService.checkCurrency(
+                base,
+                target,
+                String.valueOf(LocalDate.now())
+        ));
+    }
+
+    @GetMapping("/historical/{base}/{target}/{date}")
+    public ResponseEntity<CurrencyDto> getHistoricalExchangeRate(@PathVariable String base,
+                                                                     @PathVariable String target,
+                                                                     @PathVariable String date) {
+        return ResponseEntity.ok().body(currencyService.checkCurrency(base,
+                target,
+                date)
+        );
+    }
+
+    @GetMapping("/statistical/{base}/{target}/{from}/{to}")
+    public ResponseEntity<List<CurrencyDto>> getStatisticalExchangeRate(@PathVariable String base,
+                                                                            @PathVariable String target,
+                                                                            @PathVariable String from,
+                                                                            @PathVariable String to) {
+        return ResponseEntity.ok().body(currencyService.checkCurrencyStatistical(base,
+                target,
+                from,
+                to)
+        );
     }
 }
