@@ -22,7 +22,7 @@ public class CurrencyController {
 //    }
 
     @GetMapping
-    public ResponseEntity<CurrencyDto> getCurrency(@RequestParam String firstCurrency, @RequestParam String secondCurrency, @RequestParam String date) {
-        return ResponseEntity.ok(currencyService.checkCurrency(firstCurrency,secondCurrency,date));
+    public ResponseEntity<CurrencyDto> getCurrency(@RequestParam String firstCurrency, @RequestParam String secondCurrency, @RequestParam(required = false) String date) {
+        return ResponseEntity.ok(currencyService.checkCurrency(firstCurrency, secondCurrency, date));
     }
 }

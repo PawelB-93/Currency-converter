@@ -32,6 +32,6 @@ public class CurrencyService {
     }
 
     public LocalDate stringToLocalDate(String date) {
-        return LocalDate.parse(date);
+        return date != null ? LocalDate.parse(date) : LocalDate.now();
     }
 }
