@@ -16,10 +16,6 @@ public class CurrencyController {
     public CurrencyController(CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
-    //    @PostMapping
-//    public void getCurrency(@RequestParam String in, @RequestParam String out) {
-//        System.out.println(exchangeRateApi.getCurrency(in,out));
-//    }
 
     @GetMapping
     public ResponseEntity<CurrencyDto> getCurrency(@RequestParam String firstCurrency, @RequestParam String secondCurrency, @RequestParam(required = false) String date) {
