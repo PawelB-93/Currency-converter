@@ -1,8 +1,10 @@
 package com.example.Currencyconverter.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Data
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 public class Currency {
     private LocalDate date;
     private double result;
-    private Query query;
+    @JsonProperty("query")
+    private CurrencyType currencyType;
 }
 

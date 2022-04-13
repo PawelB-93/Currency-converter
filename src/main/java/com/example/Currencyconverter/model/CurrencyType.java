@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Query {
+public class CurrencyType {
     @JsonProperty("from")
     private String firstCurrency;
     @JsonProperty("to")
