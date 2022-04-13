@@ -40,12 +40,12 @@ public class CurrencyController {
         );
     }
 
-    @GetMapping("/statistical/{base}/{target}/{from}/{to}")
+    @GetMapping("/historical-interval/{base}/{target}/{from}/{to}")
     public ResponseEntity<List<CurrencyDto>> getStatisticalExchangeRate(@PathVariable String base,
                                                                             @PathVariable String target,
                                                                             @PathVariable String from,
                                                                             @PathVariable String to) {
-        return ResponseEntity.ok().body(currencyService.checkCurrencyStatistical(base,
+        return ResponseEntity.ok().body(currencyService.checkCurrencyHistoricalInterval(base,
                 target,
                 from,
                 to)
