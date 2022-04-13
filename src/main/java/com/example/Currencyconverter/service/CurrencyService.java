@@ -34,7 +34,7 @@ public class CurrencyService {
         return currencyTransformer.apiToDto(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date));
     }
 
-    public List<CurrencyDto> checkCurrencyStatistical(String base, String target, String from, String to) {
+    public List<CurrencyDto> checkCurrencyHistoricalInterval(String base, String target, String from, String to) {
         List<LocalDate> localDateList = getDatesInterval(LocalDate.parse(from), LocalDate.parse(to));
         List<CurrencyDto> currencyDtoList = new ArrayList<>();
 

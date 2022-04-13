@@ -34,7 +34,7 @@ http://localhost:8080/api/current/USD/EUR
 #### Get historical exchange rate for base, target and date
 
 ```http
-  GET /api/historica/{base}/{target}/{date}
+  GET /api/historical/{base}/{target}/{date}
 ```
 
 | Parameter | Type     | Description                       |
@@ -57,10 +57,10 @@ http://localhost:8080/api/historical/USD/EUR/2022-03-26
 }
 ```
 
-#### Get statisctical exchange rate for base, target, date(from) and date(to)
+#### Get historical interval exchange rate for base, target, date(from) and date(to)
 
 ```http
-  GET /api/statisctical/{base}/{target}/{from}/{to}
+  GET /api/historical-interval/{base}/{target}/{from}/{to}
 ```
 
 | Parameter | Type     | Description                       |
@@ -72,7 +72,7 @@ http://localhost:8080/api/historical/USD/EUR/2022-03-26
 
 #### Example
 ```http
-http://localhost:8080/api/statistical/USD/EUR/2022-03-10/2022-03-13
+http://localhost:8080/api/historical-interval/USD/EUR/2022-03-10/2022-03-13
 ```
 #### JSON Result
 ```json
