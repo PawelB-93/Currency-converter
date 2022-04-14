@@ -1,14 +1,11 @@
 package com.example.Currencyconverter.service;
 
-import com.example.Currencyconverter.model.Currency;
 import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.model.CurrencyEntity;
 import com.example.Currencyconverter.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -37,14 +34,7 @@ public class CurrencyService {
 
     public List<CurrencyDto> checkCurrencyHistoricalInterval(String base, String target, String from, String to) {
         List<LocalDate> localDateList = getDatesInterval(LocalDate.parse(from), LocalDate.parse(to));
-        List<CurrencyDto> currencyDtoList = new ArrayList<>();
-
-        for (int i = 0; i < localDateList.size() - 1; i++) {
-            CurrencyDto exchangeRateDto = checkCurrency(base, target, localDateList.get(i).toString());
-            currencyDtoList.add(exchangeRateDto);
-        }
-
-        return currencyDtoList;
+        return localDateList.stream().map(localDate -> checkCurrency(base,target,localDate.toString())).collect(Collectors.toList());
     }
 
     public CurrencyDto deleteCurrency(String firstCurrency, String secondCurrency, String date) {
