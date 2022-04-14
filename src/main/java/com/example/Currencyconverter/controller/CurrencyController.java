@@ -22,7 +22,7 @@ public class CurrencyController {
 
     @GetMapping("/current/{base}/{target}")
     public ResponseEntity<CurrencyDto> getCurrentExchangeRate(@PathVariable String base,
-                                                                  @PathVariable String target) {
+                                                              @PathVariable String target) {
         return ResponseEntity.ok().body(currencyService.checkCurrency(
                 base,
                 target,
@@ -32,8 +32,8 @@ public class CurrencyController {
 
     @GetMapping("/historical/{base}/{target}/{date}")
     public ResponseEntity<CurrencyDto> getHistoricalExchangeRate(@PathVariable String base,
-                                                                     @PathVariable String target,
-                                                                     @PathVariable String date) {
+                                                                 @PathVariable String target,
+                                                                 @PathVariable String date) {
         return ResponseEntity.ok().body(currencyService.checkCurrency(base,
                 target,
                 date)
@@ -42,13 +42,23 @@ public class CurrencyController {
 
     @GetMapping("/historical-interval/{base}/{target}/{from}/{to}")
     public ResponseEntity<List<CurrencyDto>> getStatisticalExchangeRate(@PathVariable String base,
-                                                                            @PathVariable String target,
-                                                                            @PathVariable String from,
-                                                                            @PathVariable String to) {
+                                                                        @PathVariable String target,
+                                                                        @PathVariable String from,
+                                                                        @PathVariable String to) {
         return ResponseEntity.ok().body(currencyService.checkCurrencyHistoricalInterval(base,
                 target,
                 from,
                 to)
+        );
+    }
+
+    @DeleteMapping("/delete/{base}/{target}/{date}")
+    public ResponseEntity<CurrencyDto> deleteCurrency(@PathVariable String base,
+                                                      @PathVariable String target,
+                                                      @PathVariable String date) {
+        return ResponseEntity.ok().body(currencyService.deleteCurrency(base,
+                target,
+                date)
         );
     }
 }

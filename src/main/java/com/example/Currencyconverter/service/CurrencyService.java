@@ -1,5 +1,6 @@
 package com.example.Currencyconverter.service;
 
+import com.example.Currencyconverter.model.Currency;
 import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.model.CurrencyEntity;
 import com.example.Currencyconverter.repository.CurrencyRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,10 +30,9 @@ public class CurrencyService {
     public CurrencyDto checkCurrency(String firstCurrency, String secondCurrency, String date) {
         Optional<CurrencyEntity> currencyEntity = currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate(firstCurrency, secondCurrency, stringToLocalDate(date));
         if (currencyEntity.isPresent()) {
-            return currencyTransformer.entityToDto(currencyEntity.get());
+            return currencyTransformer.entityToDto(saveAndUpdate(currencyEntity.get()));
         }
-        currencyRepository.save(currencyTransformer.toEntity(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date)));
-        return currencyTransformer.apiToDto(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date));
+        return currencyTransformer.entityToDto(saveAndUpdate(currencyTransformer.toEntity(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date))));
     }
 
     public List<CurrencyDto> checkCurrencyHistoricalInterval(String base, String target, String from, String to) {
@@ -46,6 +47,15 @@ public class CurrencyService {
         return currencyDtoList;
     }
 
+    public CurrencyDto deleteCurrency(String firstCurrency, String secondCurrency, String date) {
+        Optional<CurrencyEntity> currencyToDelete = currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate(firstCurrency, secondCurrency, stringToLocalDate(date));
+        currencyToDelete.ifPresent(currencyRepository::delete);
+        return currencyTransformer.entityToDto(currencyToDelete.orElseThrow(() -> {
+            throw new NoSuchElementException();
+        }));
+    }
+
+
     public List<LocalDate> getDatesInterval(LocalDate startDate, LocalDate endDate) {
         return startDate.datesUntil(endDate)
                 .collect(Collectors.toList());
@@ -53,5 +63,11 @@ public class CurrencyService {
 
     public LocalDate stringToLocalDate(String date) {
         return date != null ? LocalDate.parse(date) : LocalDate.now();
+    }
+
+    public CurrencyEntity saveAndUpdate(CurrencyEntity currencyEntity) {
+        currencyEntity.setViewCount(currencyEntity.getViewCount() + 1);
+        currencyRepository.save(currencyEntity);
+        return currencyEntity;
     }
 }
