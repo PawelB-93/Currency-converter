@@ -1,13 +1,14 @@
 package com.example.Currencyconverter.service;
 
+import com.example.Currencyconverter.exception.NoCurrencyFoundException;
 import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.model.CurrencyEntity;
 import com.example.Currencyconverter.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,14 +35,14 @@ public class CurrencyService {
 
     public List<CurrencyDto> checkCurrencyHistoricalInterval(String base, String target, String from, String to) {
         List<LocalDate> localDateList = getDatesInterval(LocalDate.parse(from), LocalDate.parse(to));
-        return localDateList.stream().map(localDate -> checkCurrency(base,target,localDate.toString())).collect(Collectors.toList());
+        return localDateList.stream().map(localDate -> checkCurrency(base, target, localDate.toString())).collect(Collectors.toList());
     }
 
     public CurrencyDto deleteCurrency(String firstCurrency, String secondCurrency, String date) {
         Optional<CurrencyEntity> currencyToDelete = currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate(firstCurrency, secondCurrency, stringToLocalDate(date));
         currencyToDelete.ifPresent(currencyRepository::delete);
         return currencyTransformer.entityToDto(currencyToDelete.orElseThrow(() -> {
-            throw new NoSuchElementException();
+            throw new NoCurrencyFoundException();
         }));
     }
 
