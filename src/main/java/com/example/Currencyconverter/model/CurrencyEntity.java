@@ -20,4 +20,5 @@ public class CurrencyEntity {
     private String secondCurrency;
     private LocalDate date;
     private double result;
+    private int viewCount;
 }

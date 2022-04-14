@@ -31,6 +31,7 @@ public class CurrencyTransformer {
         currencyDto.setSecondCurrency(currencyEntity.getSecondCurrency());
         currencyDto.setDate(currencyEntity.getDate());
         currencyDto.setResult(currencyEntity.getResult());
+        currencyDto.setViewCount(currencyEntity.getViewCount());
         return currencyDto;
     }
 }

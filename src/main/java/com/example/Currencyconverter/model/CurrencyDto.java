@@ -12,4 +12,5 @@ public class CurrencyDto {
     private String secondCurrency;
     private LocalDate date;
     private double result;
+    private int viewCount;
 }
