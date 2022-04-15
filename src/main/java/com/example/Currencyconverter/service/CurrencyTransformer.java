@@ -16,15 +16,6 @@ public class CurrencyTransformer {
         return currencyEntity;
     }
 
-    public CurrencyDto apiToDto(Currency currency) {
-        CurrencyDto currencyDto = new CurrencyDto();
-        currencyDto.setFirstCurrency(currency.getCurrencyType().getFirstCurrency());
-        currencyDto.setSecondCurrency(currency.getCurrencyType().getSecondCurrency());
-        currencyDto.setDate(currency.getDate());
-        currencyDto.setResult(currency.getResult());
-        return currencyDto;
-    }
-
     public CurrencyDto entityToDto(CurrencyEntity currencyEntity) {
         CurrencyDto currencyDto = new CurrencyDto();
         currencyDto.setFirstCurrency(currencyEntity.getFirstCurrency());
