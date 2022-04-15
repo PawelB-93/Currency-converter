@@ -1,6 +1,7 @@
 package com.example.Currencyconverter.service;
 
-import com.example.Currencyconverter.exception.NoCurrencyFoundException;
+import com.example.Currencyconverter.exception.NoCurrencyFoundInApiException;
+import com.example.Currencyconverter.exception.NoCurrencyFoundInDatabaseException;
 import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.model.CurrencyEntity;
 import com.example.Currencyconverter.repository.CurrencyRepository;
@@ -30,7 +31,11 @@ public class CurrencyService {
         if (currencyEntity.isPresent()) {
             return currencyTransformer.entityToDto(saveAndUpdate(currencyEntity.get()));
         }
-        return currencyTransformer.entityToDto(saveAndUpdate(currencyTransformer.toEntity(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date))));
+        try {
+            return currencyTransformer.entityToDto(saveAndUpdate(currencyTransformer.toEntity(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date))));
+        } catch (RuntimeException e) {
+            throw new NoCurrencyFoundInApiException();
+        }
     }
 
     public List<CurrencyDto> checkCurrencyHistoricalInterval(String base, String target, String from, String to) {
@@ -42,7 +47,7 @@ public class CurrencyService {
         Optional<CurrencyEntity> currencyToDelete = currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate(firstCurrency, secondCurrency, stringToLocalDate(date));
         currencyToDelete.ifPresent(currencyRepository::delete);
         return currencyTransformer.entityToDto(currencyToDelete.orElseThrow(() -> {
-            throw new NoCurrencyFoundException();
+            throw new NoCurrencyFoundInDatabaseException();
         }));
     }
 
@@ -53,7 +58,7 @@ public class CurrencyService {
     }
 
     public LocalDate stringToLocalDate(String date) {
-        return date != null ? LocalDate.parse(date) : LocalDate.now();
+        return LocalDate.parse(date);
     }
 
     public CurrencyEntity saveAndUpdate(CurrencyEntity currencyEntity) {

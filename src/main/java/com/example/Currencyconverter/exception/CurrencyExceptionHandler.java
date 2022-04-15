@@ -11,9 +11,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CurrencyExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoCurrencyFoundException.class)
-    public ErrorResponse handleSdaException(final NoCurrencyFoundException exception) {
-        log.error("\u001B[31mCurrency not found!\033[0m");
+    @ExceptionHandler(NoCurrencyFoundInDatabaseException.class)
+    public ErrorResponse handleNotFoundInDbException(final NoCurrencyFoundInDatabaseException exception) {
+        log.error("\u001B[31mCurrency not found in database!\033[0m");
+        return new ErrorResponse(exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoCurrencyFoundInApiException.class)
+    public ErrorResponse handleNotFoundInApiException(final NoCurrencyFoundInApiException exception) {
+        log.error("\u001B[31mCurrency not found in api!\033[0m");
         return new ErrorResponse(exception.getMessage());
     }
 
