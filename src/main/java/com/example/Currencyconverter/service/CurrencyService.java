@@ -57,7 +57,7 @@ public class CurrencyService {
 
 
     public List<LocalDate> getDatesInterval(LocalDate startDate, LocalDate endDate) {
-        return startDate.datesUntil(endDate)
+        return startDate.datesUntil(endDate.plusDays(1))
                 .collect(Collectors.toList());
     }
 
