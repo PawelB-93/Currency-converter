@@ -1,6 +1,5 @@
 package com.example.Currencyconverter.repository;
 
-
 import com.example.Currencyconverter.model.CurrencyEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
