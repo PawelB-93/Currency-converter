@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class CurrencyController {
     private final CurrencyService currencyService;
-    private final String DATE_FORMAT = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 
     @Autowired
     public CurrencyController(CurrencyService currencyService) {
@@ -37,7 +35,7 @@ public class CurrencyController {
     @GetMapping("/historical/{base}/{target}/{date}")
     public ResponseEntity<CurrencyDto> getHistoricalExchangeRate(@PathVariable String base,
                                                                  @PathVariable String target,
-                                                                 @PathVariable @Pattern(regexp = DATE_FORMAT) String date) {
+                                                                 @PathVariable String date) {
         return ResponseEntity.ok().body(currencyService.checkCurrency(base,
                 target,
                 date)
@@ -47,8 +45,8 @@ public class CurrencyController {
     @GetMapping("/historical-interval/{base}/{target}/{from}/{to}")
     public ResponseEntity<List<CurrencyDto>> getStatisticalExchangeRate(@PathVariable String base,
                                                                         @PathVariable String target,
-                                                                        @PathVariable @Pattern(regexp = DATE_FORMAT) String from,
-                                                                        @PathVariable @Pattern(regexp = DATE_FORMAT) String to) {
+                                                                        @PathVariable String from,
+                                                                        @PathVariable String to) {
         return ResponseEntity.ok().body(currencyService.checkCurrencyHistoricalInterval(base,
                 target,
                 from,
@@ -59,7 +57,7 @@ public class CurrencyController {
     @DeleteMapping("/delete/{base}/{target}/{date}")
     public ResponseEntity<CurrencyDto> deleteCurrency(@PathVariable String base,
                                                       @PathVariable String target,
-                                                      @PathVariable @Pattern(regexp = DATE_FORMAT) String date) {
+                                                      @PathVariable String date) {
         return ResponseEntity.ok().body(currencyService.deleteCurrency(base,
                 target,
                 date)

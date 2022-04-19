@@ -1,18 +1,22 @@
 package com.example.Currencyconverter.service;
 
+import com.example.Currencyconverter.exception.IncorrectDateFormatException;
 import com.example.Currencyconverter.exception.NoCurrencyFoundInApiException;
 import com.example.Currencyconverter.exception.NoCurrencyFoundInDatabaseException;
 import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.model.CurrencyEntity;
 import com.example.Currencyconverter.repository.CurrencyRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CurrencyService {
     private final ExchangeRateApi exchangeRateApi;
@@ -58,7 +62,11 @@ public class CurrencyService {
     }
 
     public LocalDate stringToLocalDate(String date) {
-        return LocalDate.parse(date);
+        try {
+            return LocalDate.parse(date);
+        } catch (DateTimeException e) {
+            throw new IncorrectDateFormatException();
+        }
     }
 
     public CurrencyEntity saveAndUpdate(CurrencyEntity currencyEntity) {

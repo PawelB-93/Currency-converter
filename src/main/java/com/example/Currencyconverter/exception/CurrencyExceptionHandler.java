@@ -24,4 +24,11 @@ public class CurrencyExceptionHandler {
         return new ErrorResponse(exception.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IncorrectDateFormatException.class)
+    public ErrorResponse handleIncorrectDateFormatException(final IncorrectDateFormatException exception) {
+        log.error("\u001B[31mIncorrect date format!\033[0m");
+        return new ErrorResponse(exception.getMessage());
+    }
+
 }
