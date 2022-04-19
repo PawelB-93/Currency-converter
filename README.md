@@ -27,7 +27,8 @@ http://localhost:8080/api/current/USD/EUR
   "firstCurrency": "USD",
   "secondCurrency": "EUR",
   "date": "2022-04-13",
-  "result": 0.923719
+  "result": 0.923719,
+  "viewCount": 1
 }
 ```
 
@@ -53,7 +54,8 @@ http://localhost:8080/api/historical/USD/EUR/2022-03-26
   "firstCurrency": "USD",
   "secondCurrency": "EUR",
   "date": "2022-03-26",
-  "result": 0.910363
+  "result": 0.910363,
+  "viewCount": 1
 }
 ```
 
@@ -81,25 +83,29 @@ http://localhost:8080/api/historical-interval/USD/EUR/2022-03-10/2022-03-13
     "firstCurrency": "USD",
     "secondCurrency": "EUR",
     "date": "2022-03-10",
-    "result": 0.90976
+    "result": 0.90976,
+    "viewCount": 1
   },
   {
     "firstCurrency": "USD",
     "secondCurrency": "EUR",
     "date": "2022-03-11",
-    "result": 0.916263
+    "result": 0.916263,
+    "viewCount": 1
   },
   {
     "firstCurrency": "USD",
     "secondCurrency": "EUR",
     "date": "2022-03-12",
-    "result": 0.916744
+    "result": 0.916744,
+    "viewCount": 1
   },
   {
     "firstCurrency": "USD",
     "secondCurrency": "EUR",
     "date": "2022-03-13",
-    "result": 0.914844
+    "result": 0.914844,
+    "viewCount": 1
   }
 ]
 ```
