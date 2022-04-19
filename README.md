@@ -103,10 +103,26 @@ http://localhost:8080/api/historical-interval/USD/EUR/2022-03-10/2022-03-13
   }
 ]
 ```
+
+#### Delete exchange rate for base, target and date
+
+```http
+  DELETE /api/delete/{base}/{target}/{date}
+```
+
+| Parameter | Type     | Description                       |
+|:----------| :------- | :-------------------------------- |
+| `base`    | `string` | **Required**. base |
+| `target`  | `string` | **Required**. target |
+| `date`    | `string` | **Required**. date format "yyyy-mm-dd |
+
+#### Example
+```http
+http://localhost:8080/api/delete/USD/EUR/2022-03-10
+```
 ## Tech Stack
 
 Spring Boot, H2, Swagger
-
 
 ## Authors
 
