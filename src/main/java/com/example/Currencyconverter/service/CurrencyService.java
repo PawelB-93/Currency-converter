@@ -3,16 +3,20 @@ package com.example.Currencyconverter.service;
 import com.example.Currencyconverter.exception.IncorrectDateFormatException;
 import com.example.Currencyconverter.exception.NoCurrencyFoundInApiException;
 import com.example.Currencyconverter.exception.NoCurrencyFoundInDatabaseException;
+import com.example.Currencyconverter.model.Currency;
 import com.example.Currencyconverter.model.CurrencyDto;
 import com.example.Currencyconverter.model.CurrencyEntity;
 import com.example.Currencyconverter.repository.CurrencyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,8 +40,12 @@ public class CurrencyService {
             return currencyTransformer.entityToDto(saveAndUpdate(currencyEntity.get()));
         }
         try {
-            return currencyTransformer.entityToDto(saveAndUpdate(currencyTransformer.toEntity(exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date))));
-        } catch (RuntimeException e) {
+            Currency currency = exchangeRateApi.getCurrency(firstCurrency, secondCurrency, date);
+            if (currency.getResult() == 0) {
+                throw new NoCurrencyFoundInApiException();
+            }
+            return currencyTransformer.entityToDto(saveAndUpdate(currencyTransformer.toEntity(currency)));
+        } catch (RestClientException e) {
             throw new NoCurrencyFoundInApiException();
         }
     }

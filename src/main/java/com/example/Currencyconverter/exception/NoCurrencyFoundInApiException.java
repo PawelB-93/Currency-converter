@@ -1,6 +1,8 @@
 package com.example.Currencyconverter.exception;
 
-public class NoCurrencyFoundInApiException extends RuntimeException {
+import org.springframework.web.client.RestClientException;
+
+public class NoCurrencyFoundInApiException extends RestClientException {
     public NoCurrencyFoundInApiException() {
         super("Currency not found!");
     }
