@@ -1,13 +1,19 @@
 package com.example.Currencyconverter.service;
 
 import com.example.Currencyconverter.model.Currency;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class ExchangeRateApi {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public ExchangeRateApi(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     private final String CURRENCY_WITH_DATE = "https://api.exchangerate.host/convert?from=%s&to=%s&date=%s";
     private final String CURRENCY_WITHOUT_DATE = "https://api.exchangerate.host/convert?from=%s&to=%s";
