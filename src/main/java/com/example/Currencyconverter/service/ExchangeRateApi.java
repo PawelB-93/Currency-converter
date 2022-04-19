@@ -16,11 +16,10 @@ public class ExchangeRateApi {
     }
 
     private final String CURRENCY_WITH_DATE = "https://api.exchangerate.host/convert?from=%s&to=%s&date=%s";
-    private final String CURRENCY_WITHOUT_DATE = "https://api.exchangerate.host/convert?from=%s&to=%s";
 
     public Currency getCurrency(String firstCurrency, String secondCurrency, String date) throws RuntimeException {
-        String url = date != null ? CURRENCY_WITH_DATE : CURRENCY_WITHOUT_DATE;
-        return restTemplate.getForObject(String.format(url, firstCurrency, secondCurrency, date), Currency.class);
+        String url = String.format(CURRENCY_WITH_DATE, firstCurrency, secondCurrency, date);
+        return restTemplate.getForObject(url, Currency.class);
     }
 
 
