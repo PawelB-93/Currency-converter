@@ -67,11 +67,10 @@ class CurrencyServiceTest {
 
     private Currency currency;
 
-
     @Test
     void when_checkCurrency_is_used_and_currency_is_already_in_db_then_currency_from_db_should_be_returned() {
         //given
-        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 15)))
+        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 5, 15)))
                 .thenReturn(Optional.of(currencyEntity));
         //when
         CurrencyDto currencyDto = currencyService.checkCurrency("USD", "EUR", "2022-05-15");
@@ -82,9 +81,9 @@ class CurrencyServiceTest {
     @Test
     void when_checkCurrency_is_used_and_currency_is_not_found_in_db_then_currency_from_api_should_be_returned() {
         //given
-        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 15)))
+        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 5, 15)))
                 .thenReturn(Optional.empty());
-        Mockito.when(exchangeRateApi.getCurrency("USD", "EUR", "2022-04-15")).thenReturn(currency);
+        Mockito.when(exchangeRateApi.getCurrency("USD", "EUR", "2022-05-15")).thenReturn(currency);
         //when
         CurrencyDto currencyDto = currencyService.checkCurrency("USD", "EUR", "2022-05-15");
         //then
@@ -94,9 +93,17 @@ class CurrencyServiceTest {
     @Test
     void when_checkCurrency_is_used_and_the_currency_result_equals_0_then_exception_should_be_thrown() {
         //given
-        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 15)))
+        Currency currency = new Currency();
+        currency.setDate(LocalDate.of(2022, 4, 15));
+        currency.setResult(0);
+        CurrencyType currencyType = new CurrencyType();
+        currencyType.setFirstCurrency("USD");
+        currencyType.setSecondCurrency("EUR");
+        currency.setCurrencyType(currencyType);
+
+        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 5, 15)))
                 .thenReturn(Optional.empty());
-        Mockito.when(exchangeRateApi.getCurrency("USD", "EUR", "2022-04-15")).thenReturn(currency);
+        Mockito.when(exchangeRateApi.getCurrency("USD", "EUR", "2022-05-15")).thenReturn(currency);
         //when
         //then
         assertThrows(NoCurrencyFoundInApiException.class, () -> {
@@ -126,15 +133,6 @@ class CurrencyServiceTest {
             currencyService.deleteCurrency("USD", "EUR", "2022-04-15");
         });
     }
-
-
-//      public CurrencyDto deleteCurrency(String firstCurrency, String secondCurrency, String date) {
-//        Optional<CurrencyEntity> currencyToDelete = currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate(firstCurrency, secondCurrency, stringToLocalDate(date));
-//        currencyToDelete.ifPresent(currencyRepository::delete);
-//        return currencyTransformer.entityToDto(currencyToDelete.orElseThrow(() -> {
-//            throw new NoCurrencyFoundInDatabaseException();
-//        }));
-//    }
 
     @Test
     void when_stringToLocalDate_is_used_and_string_is_valid_then_localDate_should_be_returned() {
