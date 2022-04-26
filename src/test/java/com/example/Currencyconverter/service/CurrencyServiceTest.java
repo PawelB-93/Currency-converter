@@ -145,13 +145,10 @@ class CurrencyServiceTest {
     @Test
     void when_checkCurrencyHistoricalInterval_is_used_then_list_of_currencies_should_be_returned() {
         //given
-        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 15)))
-                .thenReturn(Optional.of(currencyEntities.get(0)));
-        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 16)))
-                .thenReturn(Optional.of(currencyEntities.get(1)));
-        Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 17)))
-                .thenReturn(Optional.of(currencyEntities.get(2)));
-
+        for (int i = 0; i < currencyEntities.size(); i++) {
+            Mockito.when(currencyRepository.findByFirstCurrencyAndSecondCurrencyAndDate("USD", "EUR", LocalDate.of(2022, 4, 15+i)))
+                    .thenReturn(Optional.of(currencyEntities.get(i)));
+        }
         //when
         List<CurrencyDto> currencyDtoList = currencyService.checkCurrencyHistoricalInterval("USD", "EUR", "2022-04-15", "2022-04-17");
         //then
@@ -160,6 +157,7 @@ class CurrencyServiceTest {
                 () -> assertEquals(3, currencyDtoList.size())
         );
     }
+
 
     @Test
     void when_deleteCurrency_is_used_and_currency_exist_then_currency_should_be_deleted() {

@@ -62,12 +62,6 @@ class CurrencyControllerTest {
                 .andExpect(jsonPath("$.viewCount", equalTo(1)));
     }
 
-//    "firstCurrency": "USD",
-//  "secondCurrency": "PLN",
-//  "date": "2022-03-15",
-//  "result": 4.296354,
-//  "viewCount": 1
-
     @Test
     void when_getCurrentExchangeRate_is_requested_and_current_rate_does_not_exist_then_error_should_be_returned() throws Exception {
         //given
